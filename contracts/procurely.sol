@@ -1,0 +1,109 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract Procurely {
+
+    address public issuer;
+
+    struct Bid {
+        address bidder;
+        uint amount;
+        string details;
+        bool isEvaluated;
+        bool isWinner;
+        string businessName;
+    }
+
+    struct Tender {
+        address issuer;
+        string details;
+        bool isClosed;
+        uint bidCount;
+        mapping(uint => Bid) bids;
+    }
+
+    mapping(uint => Tender) public tenders;
+    uint public tenderCount;
+
+    event TenderCreated(uint tenderId);
+    event BidPlaced(uint tenderId, uint bidId);
+    event TenderEvaluated(uint tenderId, uint winningBidId);
+
+    // Set the contract creator as the authorized issuer
+    constructor(address _issuer) {
+        issuer = _issuer;
+    }
+
+    modifier onlyIssuer() {
+        require(msg.sender == issuer, "Not an issuer");
+        _;
+    }
+
+    function createTender(string memory _details) public onlyIssuer() {
+        uint newTenderId = tenderCount + 1;
+        Tender storage newTender = tenders[newTenderId];
+        newTender.issuer = issuer;
+        newTender.details = _details;
+        newTender.isClosed = false;
+        newTender.bidCount = 0; // Initialize bidCount explicitly
+
+        tenderCount = newTenderId;
+
+        emit TenderCreated(newTenderId);
+    }
+
+    function placeBid(uint _tenderId, uint _amount, string memory _details, string memory _businessName) public {
+        Tender storage tender = tenders[_tenderId];
+        require(!tender.isClosed, "Tender is closed");
+        tender.bidCount++;
+        tender.bids[tender.bidCount] = Bid(msg.sender, _amount, _details, false, false, _businessName);
+        emit BidPlaced(_tenderId, tender.bidCount);
+    }
+
+    function getBid(uint _tenderId, uint _bidId) public view returns (address, uint, string memory, bool, bool, string memory) {
+        Bid memory bid = tenders[_tenderId].bids[_bidId];
+        return (bid.bidder, bid.amount, bid.details, bid.isEvaluated, bid.isWinner, bid.businessName);
+    }
+
+    function closeAndEvaluateTender(uint _tenderId) public onlyIssuer() {
+        Tender storage tender = tenders[_tenderId];
+        require(msg.sender == tender.issuer, "Only the issuer can close the tender");
+        require(!tender.isClosed, "Tender already closed");
+        tender.isClosed = true;
+
+        uint highestBid = 0;
+        uint winningBidId;
+        for (uint i = 1; i <= tender.bidCount; i++) {
+            if (tender.bids[i].amount > highestBid) {
+                highestBid = tender.bids[i].amount;
+                winningBidId = i;
+            }
+        }
+
+        if (winningBidId > 0) {
+            tender.bids[winningBidId].isWinner = true;
+            emit TenderEvaluated(_tenderId, winningBidId);
+        }
+    }
+}
+
+contract ProcurelyFactory {
+    // Mapping to keep track of which address created which Procurely contract
+    mapping(address => address[]) public creatorContracts;
+    
+    // Event to announce a new Procurely contract creation
+    event ProcurelyCreated(address indexed issuer, address contractAddress);
+
+    // Function to create a new Procurely contract
+    function createProcurely() public {
+        address sender = msg.sender;
+        Procurely newContract = new Procurely(sender); // Pass the caller as the issuer
+        creatorContracts[msg.sender].push(address(newContract));
+        emit ProcurelyCreated(msg.sender, address(newContract));
+    }
+
+    // Function to get all Procurely contracts created by a specific user
+    function getCreatorContracts(address _creator) public view returns (address[] memory) {
+        return creatorContracts[_creator];
+    }
+}

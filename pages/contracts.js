@@ -1,38 +1,39 @@
-import styles from '../styles/Contracts.module.css'
-import CampaignStatus from '../components/CampaignStatus';
+import styles from '../styles/Contracts.module.css';
+import ContractStatus from '../components/ContractStatus';
 import { ethers } from 'ethers';
-import factoryABI from '../abi/CampaignFactoryABI.json';
+import factoryABI from '../artifacts/contracts/procurely.sol/ProcurelyFactory.json';
+const { abi } = factoryABI;
 import React, { useState, useEffect } from 'react';
 
-const factoryAddress = '0x6626A5bc9f19DCa28be96b78a3fea299175d3735';
+const factoryAddress = '0x00A76DaE1B17948FE91F37c06B4c81AD084383CB';
 
-const Campaigns = () => {
-
-    const [campaignAddresses, setCampaignAddresses] = useState([]); // Array to hold campaign addresses
+const Contracts = () => {
+    const [tenderAddresses, setTenderAddresses] = useState([]); // Array to hold tender addresses
 
     useEffect(() => {
         const provider = new ethers.BrowserProvider(window.ethereum);
-        const factoryContract = new ethers.Contract(factoryAddress, factoryABI, provider);
+        const factoryContract = new ethers.Contract(factoryAddress, abi, provider);
 
-        const fetchCampaignAddresses = async () => {
-            const filter = factoryContract.filters.CampaignCreated();
+        const fetchTenderAddresses = async () => {
+            // Assuming the event name emitted by the contract on tender creation is 'TenderCreated'
+            const filter = factoryContract.filters.ProcurelyCreated(); 
             const events = await factoryContract.queryFilter(filter);
-            const addresses = events.map(event => event.args.campaignAddress);
-            setCampaignAddresses(addresses);
+            const addresses = events.map(event => event.args.contractAddress); // Updated the property name based on actual event args
+            setTenderAddresses(addresses);
         };
 
-        fetchCampaignAddresses();
+        fetchTenderAddresses();
     }, []);
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>Campaigns</h1>
+            <h1 className={styles.title}>Procurely Tenders</h1>
             <div className={styles.campaignList}>
                 <div>
-                    <h2>All Campaigns</h2>
-                    {/* Dynamically render CampaignStatus for each campaign */}
-                    {campaignAddresses.map((address, index) => (
-                        <CampaignStatus key={index} campaignAddress={address} />
+                    <h2>All Tenders</h2>
+                    {/* Dynamically render ContractStatus for each tender */}
+                    {tenderAddresses.map((address, index) => (
+                        <ContractStatus key={index} contractAddress={address} />
                     ))}
                 </div>
             </div>
@@ -40,4 +41,4 @@ const Campaigns = () => {
     );
 }
 
-export default Campaigns;
+export default Contracts;

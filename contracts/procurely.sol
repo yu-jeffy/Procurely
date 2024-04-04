@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 contract Procurely {
 
     address public issuer;
+    uint[] public tenderIds;
 
     struct Bid {
         address bidder;
@@ -16,10 +17,13 @@ contract Procurely {
 
     struct Tender {
         address issuer;
+        uint deadline;
         string details;
         bool isClosed;
         uint bidCount;
         mapping(uint => Bid) bids;
+        uint[] bidIds;
+        uint tenderId;
     }
 
     mapping(uint => Tender) public tenders;
@@ -39,31 +43,99 @@ contract Procurely {
         _;
     }
 
-    function createTender(string memory _details) public onlyIssuer() {
+    function createTender(string memory _details, uint deadline) public onlyIssuer() {
         uint newTenderId = tenderCount + 1;
         Tender storage newTender = tenders[newTenderId];
         newTender.issuer = issuer;
         newTender.details = _details;
         newTender.isClosed = false;
         newTender.bidCount = 0; // Initialize bidCount explicitly
+        newTender.deadline = block.timestamp + deadline * 1 weeks;
 
         tenderCount = newTenderId;
+
+        // Add the new tender ID to the tenderIds array
+        tenderIds.push(newTenderId);
 
         emit TenderCreated(newTenderId);
     }
 
-    function placeBid(uint _tenderId, uint _amount, string memory _details, string memory _businessName) public {
+    struct TenderDetails {
+        address issuer;
+        string details;
+        bool isClosed;
+        uint deadline;
+        uint bidCount;
+    }
+
+    function getTender(uint _tenderId) public view returns (TenderDetails memory) {
         Tender storage tender = tenders[_tenderId];
-        require(!tender.isClosed, "Tender is closed");
+        return TenderDetails({
+            issuer: tender.issuer,
+            details: tender.details,
+            isClosed: tender.isClosed,
+            deadline: tender.deadline,
+            bidCount: tender.bidCount
+        });
+    }
+
+    function getAllTenders() public view returns (TenderDetails[] memory) {
+        TenderDetails[] memory _tenders = new TenderDetails[](tenderIds.length);
+        for (uint i = 0; i < tenderIds.length; i++) {
+            Tender storage tender = tenders[tenderIds[i]];
+            _tenders[i] = TenderDetails({
+                issuer: tender.issuer,
+                details: tender.details,
+                isClosed: tender.isClosed,
+                deadline: tender.deadline,
+                bidCount: tender.bidCount
+            });
+        }
+        return _tenders;
+    }
+
+    function placeBid(uint _tenderId, uint _amount, string memory _details, string memory _businessName) public {
+        // Create the bid
+        Bid memory newBid = Bid({
+            bidder: msg.sender,
+            amount: _amount,
+            details: _details,
+            isEvaluated: false,
+            isWinner: false,
+            businessName: _businessName
+        });
+
+        // Get the tender
+        Tender storage tender = tenders[_tenderId];
+
+        // Add the bid to the bids mapping
+        tender.bids[tender.bidCount] = newBid;
+
+        // Add the bid ID to the bidIds array
+        tender.bidIds.push(tender.bidCount);
+
+        // Increment the bid count
         tender.bidCount++;
-        tender.bids[tender.bidCount] = Bid(msg.sender, _amount, _details, false, false, _businessName);
-        emit BidPlaced(_tenderId, tender.bidCount);
+
+        // Emit the BidPlaced event
+        emit BidPlaced(_tenderId, tender.bidCount - 1);
     }
 
     function getBid(uint _tenderId, uint _bidId) public view returns (address, uint, string memory, bool, bool, string memory) {
         Bid memory bid = tenders[_tenderId].bids[_bidId];
         return (bid.bidder, bid.amount, bid.details, bid.isEvaluated, bid.isWinner, bid.businessName);
     }
+
+    function getAllBids(uint _tenderId) public view returns (Bid[] memory) {
+        Tender storage tender = tenders[_tenderId];
+        Bid[] memory bids = new Bid[](tender.bidIds.length);
+        for (uint i = 0; i < tender.bidIds.length; i++) {
+            bids[i] = tender.bids[tender.bidIds[i]];
+        }
+        return bids;
+    }
+
+
 
     function closeAndEvaluateTender(uint _tenderId) public onlyIssuer() {
         Tender storage tender = tenders[_tenderId];

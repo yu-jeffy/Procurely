@@ -3,7 +3,7 @@
 
    async function main() {
      // Your deployed Procurely contract's address
-     const procurelyAddress = "0xcE70eD30710735B81b594Ab5F9c5Ee716cD077e1";
+     const procurelyAddress = "0x7160A10f767270E21564fE73A7CA2C2713889B06";
 
      // Assuming you have the compiled artifacts of your contract
      const ProcurelyArtifact = require("../artifacts/contracts/procurely.sol/Procurely.json");
@@ -19,7 +19,7 @@
 
      // Call the createTender function with example details
      console.log("Creating a new tender...");
-     const transaction = await procurely.createTender("Example tender details");
+     const transaction = await procurely.createTender("Example tender details", 2);
      const receipt = await transaction.wait();
 
      console.log(`Tender created! Transaction Hash: ${receipt.transactionHash}`);

@@ -1,0 +1,43 @@
+.tenderStatusContainer {
+    position: fixed;
+    right: 0;
+    width: 40vw;
+    height: 93%;
+    overflow: auto;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.tenderStatusHeader,
+.bidsHeader {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.contractAddressInfo,
+.tenderIdInfo {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.bidContainer {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.bidderInfo,
+.bidAmountInfo,
+.bidDetailsInfo,
+.bidEvaluationStatus,
+.bidWinnerStatus,
+.bidBusinessName {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 10px;
+}

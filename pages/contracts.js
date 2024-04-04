@@ -1,13 +1,17 @@
 import styles from '../styles/Contracts.module.css';
 import ContractStatus from '../components/ContractStatus';
+import TenderStatus from '../components/TenderStatus';
 import { ethers } from 'ethers';
 import factoryABI from '../artifacts/contracts/procurely.sol/ProcurelyFactory.json';
 const { abi } = factoryABI;
 import React, { useState, useEffect } from 'react';
 
-const factoryAddress = '0x00A76DaE1B17948FE91F37c06B4c81AD084383CB';
+const factoryAddress = '0x47D7afA80ebe0DcFB70aACbD43c6664F83f7c6F2';
 
 const Contracts = () => {
+    const [isRightVisible, setIsRightVisible] = useState(false);
+    const [contractAddress, setContractAddress] = useState(''); // State to hold the contract address
+    const [tenderId, setTenderId] = useState(''); // State to hold the tender ID
     const [tenderAddresses, setTenderAddresses] = useState([]); // Array to hold tender addresses
 
     useEffect(() => {
@@ -25,17 +29,35 @@ const Contracts = () => {
         fetchTenderAddresses();
     }, []);
 
+    const onTenderClick = (contractAddress, tenderId) => {
+        // Set the contract address and tender ID
+        setContractAddress(contractAddress);
+        setTenderId(tenderId);
+    
+        // Show styles.right
+        setIsRightVisible(true);
+      };
+
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>Procurely Tenders</h1>
-            <div className={styles.campaignList}>
-                <div>
-                    <h2>All Tenders</h2>
-                    {/* Dynamically render ContractStatus for each tender */}
-                    {tenderAddresses.map((address, index) => (
-                        <ContractStatus key={index} contractAddress={address} />
-                    ))}
+            <div className={styles.left} style={{ width: isRightVisible ? '60vw' : '100vw' }}>
+                <h1 className={styles.title}>Issuers and Tenders</h1>
+                <div className={styles.campaignList}>
+                    <div>
+                        {/* Dynamically render ContractStatus for each tender */}
+                        {tenderAddresses.map((address, index) => (
+                            <ContractStatus
+                                className = {styles.panel}
+                                key = {index}
+                                contractAddress={address}
+                                onTenderClick={onTenderClick}
+                            />
+                        ))}
+                    </div>
                 </div>
+            </div>
+            <div className={styles.right} style={{ display: isRightVisible ? 'block' : 'none' }}>
+                <TenderStatus contractAddress={contractAddress} tenderId={tenderId}/>
             </div>
         </div>
     );

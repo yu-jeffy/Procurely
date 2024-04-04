@@ -3,7 +3,7 @@ const { ethers, run } = require("hardhat");
 
 async function main() {
     // The address of your factory contract
-    const factoryAddress = "0x00A76DaE1B17948FE91F37c06B4c81AD084383CB";
+    const factoryAddress = "0x47D7afA80ebe0DcFB70aACbD43c6664F83f7c6F2";
     // Loading the factory contract using the factory ABI and the factory address
     const factoryABI = require("../artifacts/contracts/procurely.sol/ProcurelyFactory.json").abi;
     const factoryContract = await ethers.getContractAt(factoryABI, factoryAddress);

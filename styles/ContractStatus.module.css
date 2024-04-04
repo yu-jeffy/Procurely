@@ -1,0 +1,56 @@
+/* ContractStatus.module.css */
+
+.container {
+    background-color: #f5f5dc; /* light brown */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 50vw;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.issuer,
+.contractAddress,
+.tenderCount,
+.tenderDetails,
+.tenderDeadline,
+.bidCount,
+.isClosed {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.tendersListTitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.tendersList {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tenderItem {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.noTenders {
+    font-size: 16px;
+    color: #333;
+    margin-top: 20px;
+}

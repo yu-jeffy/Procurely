@@ -11,7 +11,7 @@ const NavBar = () => {
     <nav className={styles.navbar}>
       <div className={styles.navbarLogo}>
         <Link href="/">
-          <h1 className={styles.navbarTitle}>giv3</h1>
+          <h1 className={styles.navbarTitle}>procurely</h1>
         </Link> 
       </div>
       <div className = {styles.right}>
@@ -21,7 +21,7 @@ const NavBar = () => {
           {isConnected && (
             <>
 
-              <Link className={styles.navbarLink} href="/campaigns">Campaigns</Link>
+              <Link className={styles.navbarLink} href="/contracts">Contracts</Link>
               <Link className={styles.navbarLink} href="/create">Create</Link>
             </>
           )}

@@ -1,0 +1,13 @@
+/** @type import('hardhat/config').HardhatUserConfig */
+require("@nomicfoundation/hardhat-ignition-ethers");
+
+module.exports = {
+  solidity: "0.8.24",
+  networks: {
+    sepolia: {
+      chainId: 11155111,
+      url: "YOUR ENDPOINT HERE",
+      accounts: ["PRIVATE KEY HERE"],
+    },
+  },
+};

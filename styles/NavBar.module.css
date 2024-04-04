@@ -1,0 +1,62 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #333;
+  color: white;
+  padding-top: 1vh;
+  height: 7%;
+  min-height: 50px;
+  width: 100vw;
+  position: fixed;
+  z-index: 2;
+  box-sizing: border-box;
+  margin-top: 0;
+}
+
+.navbarTitle {
+  margin-top: .3vh;
+  margin-left: 2vw;
+  font-size: 1.8rem;
+  font-family: "Fragment Mono", "Helvetica", sans-serif;
+}
+
+.navbarLogo h1, .navbarLogo img {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 20%;
+}
+
+.right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 80%;
+}
+
+.navbarLinkContainer .nav-item {
+  width: fit-content;
+  padding-right: 2vw;
+}
+
+.navbarLink {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.navItem:hover {
+  text-decoration: underline;
+}
+
+.navbarConnect {
+  width: fit-content;
+  box-sizing: border-box;
+}

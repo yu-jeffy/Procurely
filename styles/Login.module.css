@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    width: 50vh;
+    flex-direction: column;
+    background-color: antiquewhite;
+    border-radius: 20px;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+}
+
+.text {
+    font-size: 2rem;
+    margin-bottom: 1vh;
+}
+
+.emoji {
+    font-size: 2rem;
+    margin-bottom: 3vh;
+}

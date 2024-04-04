@@ -1,4 +1,4 @@
-import styles from '../styles/Campaigns.module.css'
+import styles from '../styles/Contracts.module.css'
 import CampaignStatus from '../components/CampaignStatus';
 import { ethers } from 'ethers';
 import factoryABI from '../abi/CampaignFactoryABI.json';

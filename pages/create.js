@@ -1,15 +1,22 @@
-reimport styles from '../styles/Create.module.css'
-import CreateCampaignForm from '../components/CreateCampaignForm';
-import React, { useEffect } from 'react';
+import styles from '../styles/Create.module.css'
+import ContractList from '../components/ContractList';
+import CreateTenderForm from '../components/CreateTenderForm';
+import React, { useState, useEffect } from 'react';
 
 const Create = () => {
+    const [selectedContract, setSelectedContract] = useState(null);
+
+    function handleContractSelect(contractAddress) {
+        setSelectedContract(contractAddress);
+    }
     
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>Create Page</h1>
             <div>
-                <h1>Create a New Campaign</h1>
-                <CreateCampaignForm campaignFactoryAddress={"0x6626A5bc9f19DCa28be96b78a3fea299175d3735"} />
+                <ContractList onContractSelect={handleContractSelect} />
+            </div>
+            <div>
+                <CreateTenderForm contractAddress={selectedContract} />
             </div>
         </div>
     );

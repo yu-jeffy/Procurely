@@ -16,7 +16,7 @@ Save the deployment address in the terminal. Use this in the .env file.
 
 ## Set Up Environment Variables
 ```bash
-factoryAddress="paste it here"
+FACTORY_ADDRESS="paste it here"
 ```
 
 ## Run the Dev Server

@@ -6,7 +6,7 @@ import factoryABI from '../artifacts/contracts/procurely.sol/ProcurelyFactory.js
 const { abi } = factoryABI;
 import React, { useState, useEffect } from 'react';
 
-const factoryAddress = '0x47D7afA80ebe0DcFB70aACbD43c6664F83f7c6F2';
+const factoryAddress = process.env.NEXT_PUBLIC_FACTORY_ADDRESS;
 
 const Contracts = () => {
     const [isRightVisible, setIsRightVisible] = useState(false);

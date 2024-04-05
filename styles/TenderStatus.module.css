@@ -1,8 +1,8 @@
 .tenderStatusContainer {
-    position: fixed;
     right: 0;
-    width: 40vw;
-    height: 93%;
+    width: 100%;
+    min-width: 40%;
+    height: auto;
     overflow: auto;
     background-color: #f4f4f4;
     padding: 20px;

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/workspaces/Procurely/contracts/procurely.sol": {
-      "lastModificationDate": 1712270816297,
-      "contentHash": "04e2e9be0b17e0a5a8f20cdad8954e3c",
+      "lastModificationDate": 1712279774973,
+      "contentHash": "495fdc594dba279abc599cb8bee74ba8",
       "sourceName": "contracts/procurely.sol",
       "solcConfig": {
         "version": "0.8.24",

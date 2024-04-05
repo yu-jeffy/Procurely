@@ -1,6 +1,7 @@
 import styles from '../styles/Contracts.module.css';
 import ContractStatus from '../components/ContractStatus';
 import TenderStatus from '../components/TenderStatus';
+import BidForm from '../components/BidForm';
 import { ethers } from 'ethers';
 import factoryABI from '../artifacts/contracts/procurely.sol/ProcurelyFactory.json';
 const { abi } = factoryABI;
@@ -40,8 +41,8 @@ const Contracts = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.left} style={{ width: isRightVisible ? '60vw' : '100vw' }}>
-                <h1 className={styles.title}>Issuers and Tenders</h1>
+            <div className={styles.left} style={{ width: isRightVisible ? '50vw' : '100vw' }}>
+                <h1 className={styles.title}>Procurements</h1>
                 <div className={styles.campaignList}>
                     <div>
                         {/* Dynamically render ContractStatus for each tender */}
@@ -57,6 +58,7 @@ const Contracts = () => {
                 </div>
             </div>
             <div className={styles.right} style={{ display: isRightVisible ? 'block' : 'none' }}>
+                <BidForm contractAddress={contractAddress} tenderId={tenderId}/>
                 <TenderStatus contractAddress={contractAddress} tenderId={tenderId}/>
             </div>
         </div>

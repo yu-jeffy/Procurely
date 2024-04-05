@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 contract Procurely {
 
     address public issuer;
+    string public contractName;
     uint[] public tenderIds;
 
     struct Bid {
@@ -16,6 +17,7 @@ contract Procurely {
     }
 
     struct Tender {
+        string name;
         address issuer;
         uint deadline;
         string details;
@@ -34,8 +36,9 @@ contract Procurely {
     event TenderEvaluated(uint tenderId, uint winningBidId);
 
     // Set the contract creator as the authorized issuer
-    constructor(address _issuer) {
+    constructor(address _issuer, string memory _contractName) {
         issuer = _issuer;
+        contractName = _contractName;
     }
 
     modifier onlyIssuer() {
@@ -167,9 +170,9 @@ contract ProcurelyFactory {
     event ProcurelyCreated(address indexed issuer, address contractAddress);
 
     // Function to create a new Procurely contract
-    function createProcurely() public {
+    function createProcurely(string memory _contractName) public {
         address sender = msg.sender;
-        Procurely newContract = new Procurely(sender); // Pass the caller as the issuer
+        Procurely newContract = new Procurely(sender, _contractName); // Pass the caller as the issuer
         creatorContracts[msg.sender].push(address(newContract));
         emit ProcurelyCreated(msg.sender, address(newContract));
     }

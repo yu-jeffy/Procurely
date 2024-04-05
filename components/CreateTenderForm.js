@@ -33,8 +33,8 @@ function CreateTenderForm( {contractAddress} ) {
 
   return (
     <div className={styles.container}>
+      <h2 className={styles.title}>Create Tender</h2>
       <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-        <div>Selected Address: {contractAddress}</div>
         <input 
           type="text" 
           placeholder="Tender Details" 

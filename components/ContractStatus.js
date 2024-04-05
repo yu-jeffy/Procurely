@@ -7,26 +7,33 @@ const { abi } = ContractABI;
 
 const ContractStatus = ({ contractAddress, onTenderClick }) => {
   const [issuer, setIssuer] = useState('Loading...');
-  const [tenderCount, setTenderCount] = useState('Loading...');
-  const [tendersList, setTendersList] = useState([]);
+  const [contractName, setContractName] = useState('Loading...');
   const [tenders, setTenders] = useState([]);
 
-    // pages/contracts.js
   useEffect(() => {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const factoryContract = new ethers.Contract(contractAddress, abi, provider);
+    const fetchContractData = async () => {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const contract = new ethers.Contract(contractAddress, abi, provider);
 
-      const fetchTenders = async () => {
-          const tenders = await factoryContract.getAllTenders();
-          setTenders(tenders);
-      };
+        // Fetch the issuer from the contract
+        const issuerAddress = await contract.issuer();
+        setIssuer(issuerAddress);
 
-      fetchTenders();
-  }, []);
+        // Fetch the contractName from the contract
+        const contractName = await contract.contractName();
+        setContractName(contractName);
+
+        // Fetch the tenders from the contract
+        const tenders = await contract.getAllTenders();
+        setTenders(tenders);
+    };
+
+      fetchContractData();
+  }, [contractAddress]);
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Contract Issuer</h2>
+      <h2 className={styles.title}>{contractName}</h2>
       <p className={styles.issuer}><strong>Issuer:</strong> {issuer}</p>
       <p className={styles.contractAddress}><strong>Contract Address:</strong> {contractAddress}</p>
       <p className={styles.tenderCount}><strong>Total Tenders:</strong> {tenders.length}</p>

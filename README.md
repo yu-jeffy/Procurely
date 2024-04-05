@@ -26,3 +26,11 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Get Sepolia Testnet Funds
+```bash
+https://sepolia-faucet.pk910.de/#/
+```
+
+## Create and Bid
+Connect your wallet, go to the create page and start your first procurement and tenders. Go to the contracts page to find procurements and tenders to bid on.

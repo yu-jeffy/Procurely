@@ -23,6 +23,7 @@ const NavBar = () => {
 
               <Link className={styles.navbarLink} href="/contracts">Contracts</Link>
               <Link className={styles.navbarLink} href="/create">Create</Link>
+              <Link className={styles.navbarLink} href="/dashboard">Dashboard</Link>
             </>
           )}
         </div>

@@ -20,7 +20,6 @@ const Contracts = () => {
         const factoryContract = new ethers.Contract(factoryAddress, abi, provider);
 
         const fetchTenderAddresses = async () => {
-            // Assuming the event name emitted by the contract on tender creation is 'TenderCreated'
             const filter = factoryContract.filters.ProcurelyCreated(); 
             const events = await factoryContract.queryFilter(filter);
             const addresses = events.map(event => event.args.contractAddress); // Updated the property name based on actual event args

@@ -6,42 +6,15 @@ import procurelyABI from '../artifacts/contracts/procurely.sol/Procurely.json';
 const factoryAbi = factoryABI.abi;
 const procurelyAbi = procurelyABI.abi;
 
-function ContractList({ onContractSelect }) {
+function ContractList({ onContractSelect, currentPath }) {
+
     const [contracts, setContracts] = useState([]);
     const [selectedContract, setSelectedContract] = useState(null);
     const [contractName, setContractName] = useState('');
     const [newContractName, setNewContractName] = useState('');
+    const [searchTerm, setSearchTerm] = useState(''); // New state for search term
 
-    async function createIssuerContract() {
-        try {
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const signer = await provider.getSigner();
-            const contract = new ethers.Contract(process.env.NEXT_PUBLIC_FACTORY_ADDRESS, factoryAbi, signer);
-
-            // Listen for the ProcurelyCreated event
-            contract.on("ProcurelyCreated", (issuer, contractAddress) => {
-                console.log(`Procurely Contract Created! Issuer: ${issuer}, Address: ${contractAddress}`);
-                // After detecting the event, we can remove the listener if no more contracts will be created.
-                contract.removeAllListeners("ProcurelyCreated");
-            });
-
-            console.log("Creating new Procurely contract from Factory...");
-
-            const transaction = await contract.createProcurely(newContractName);
-            console.log("Awaiting confirmation...");
-            const receipt = await transaction.wait();
-
-            if (receipt.status === 1) {
-                console.log("Procurely Contract creation transaction succeeded.");
-                // Refresh the list of contracts
-                getCreatorContracts();
-            } else {
-                console.error("Procurely Contract creation transaction failed.");
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    async function createIssuerContract() {/*...*/ }
 
     async function getCreatorContracts() {
         try {
@@ -77,7 +50,7 @@ function ContractList({ onContractSelect }) {
                 });
 
             const creatorContracts = await Promise.all(creatorContractsPromises);
-            setContracts(creatorContracts.filter(contract => contract !== undefined));
+            setContracts(creatorContracts);
         } catch (error) {
             console.error('Failed to get creator contracts:', error);
         }
@@ -88,6 +61,7 @@ function ContractList({ onContractSelect }) {
         setSelectedContract(contractAddress);
         // Call the callback function with the selected contract address
         const provider = new ethers.BrowserProvider(window.ethereum);
+
         const contract = new ethers.Contract(contractAddress, procurelyAbi, provider);
         const name = await contract.contractName();
         setContractName(name);
@@ -100,14 +74,26 @@ function ContractList({ onContractSelect }) {
         }
     }, []);
 
+    // Filter contracts based on search term
+    const filteredContracts = contracts.filter(contract =>
+        contract.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>Active Procurements</h1>
+            <input
+                type="text"
+                placeholder="Search by contract name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={styles.searchField}
+            />
             {selectedContract && (
                 <p className={styles.selectedContract}>Selected Procurement: {contractName}<br></br>{selectedContract}<br></br></p>
             )}
             <ul className={styles.contractList}>
-                {contracts.map(contract => {
+                {filteredContracts.map(contract => {
                     console.log(contract); // Log the contract object to check its properties
                     return (contract &&
                         <li key={contract.address} className={styles.contractItem}>
@@ -118,16 +104,22 @@ function ContractList({ onContractSelect }) {
                     );
                 })}
             </ul>
-            <br></br>
-            New Procurement Name:
-            <br></br>
-            <textarea
-                className={styles.textarea}
-                value={newContractName}
-                onChange={(e) => setNewContractName(e.target.value)}
-            />
-            <br></br>
-            <button className={styles.createIssuerButton} onClick={createIssuerContract}>Create New Procurement</button>
+            <div className = {styles.newProcurement}>
+                {currentPath !== '/dashboard' && (
+                    <div>
+                        <br></br>
+                        New Procurement Name:
+                        <br></br>
+                        <textarea
+                            className={styles.textarea}
+                            value={newContractName}
+                            onChange={(e) => setNewContractName(e.target.value)}
+                        />
+                        <br></br>
+
+                        <button className={styles.createIssuerButton} onClick={createIssuerContract}>Create New Procurement</button>
+                    </div>)}
+            </div>
         </div>
     );
 }

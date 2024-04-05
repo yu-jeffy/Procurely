@@ -12,25 +12,41 @@ const ContractStatus = ({ contractAddress, onTenderClick }) => {
 
   useEffect(() => {
     const fetchContractData = async () => {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const contract = new ethers.Contract(contractAddress, abi, provider);
+      if (!contractAddress) {
+        console.error('Contract address is empty');
+        return;
+      }
 
-        // Fetch the issuer from the contract
-        const issuerAddress = await contract.issuer();
-        setIssuer(issuerAddress);
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const contract = new ethers.Contract(contractAddress, abi, provider);
 
-        // Fetch the contractName from the contract
-        const contractName = await contract.contractName();
-        setContractName(contractName);
 
-        // Fetch the tenders from the contract
-        const tenders = await contract.getAllTenders();
-        setTenders(tenders);
+      if (!contract) {
+        console.error('Contract is null');
+        return;
+      }
+
+      // Fetch the issuer from the contract
+      const issuerAddress = await contract.issuer();
+
+      if (!issuerAddress) {
+        console.error('Issuer address is null');
+        return;
+      }
+
+      setIssuer(issuerAddress);
+
+      // Fetch the contractName from the contract
+      const contractName = await contract.contractName();
+      setContractName(contractName);
+
+      // Fetch the tenders from the contract
+      const tenders = await contract.getAllTenders();
+      setTenders(tenders);
     };
 
-      fetchContractData();
+    fetchContractData();
   }, [contractAddress]);
-
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>{contractName}</h2>

@@ -4,16 +4,23 @@
     align-items: flex-start;
     justify-content: center;
     padding-top: 7vh;
+    margin: 0;
+    padding-left: 0px;
     width: 100vw;
     overflow-y: scroll;
     box-sizing: border-box;
 }
 
 .left {
-    width: 100vw;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
     flex-direction: column;
-    align-items: flex-start;
+    padding-left: 10px;
+    box-sizing: border-box;
+    margin: 0px;
+    width: 50%;
+    float: left;
 }
 
 .title {
@@ -30,8 +37,7 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: flex-start;
-    margin: 10px 20px;
-    width: 100%;
+    width: 50vw;
 }
 
 .panel {
@@ -39,7 +45,8 @@
 }
 
 .right {
-    width: 50vw;
+    width: 50%;
+    float: right;
 }
 
 

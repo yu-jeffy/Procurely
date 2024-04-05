@@ -23,7 +23,7 @@
 .tenderDeadline,
 .bidCount,
 .isClosed {
-    font-size: 16px;
+    font-size: .85rem;
     color: #333;
     margin-bottom: 10px;
 }

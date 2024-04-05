@@ -93,10 +93,10 @@ const Home: NextPage = () => {
       {/* Content */}
       <div className={styles.homeSection}>
         <h1 className={styles.mainText}>procure {currentText}</h1>
-        <h2 className={styles.subText}>decentralized contract procurement</h2>
-        <h2 className={styles.subText}>hosted on ethereum sepolia testnet</h2>
+        <h2 className={styles.subText}>decentralized procurement and auctions</h2>
+        <h2 className={styles.subText}>currently hosted on ethereum sepolia testnet</h2>
         {isConnected ? (
-          <Link href="/campaigns">
+          <Link href="/contracts">
             <button className={styles.subButton}>View Contracts</button>
           </Link>
         ) : (

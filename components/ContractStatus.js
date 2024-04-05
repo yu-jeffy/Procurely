@@ -37,7 +37,7 @@ const ContractStatus = ({ contractAddress, onTenderClick }) => {
       <p className={styles.issuer}><strong>Issuer:</strong> {issuer}</p>
       <p className={styles.contractAddress}><strong>Contract Address:</strong> {contractAddress}</p>
       <p className={styles.tenderCount}><strong>Total Tenders:</strong> {tenders.length}</p>
-      <h3 className={styles.tendersListTitle}>Tenders List</h3>
+      <h3 className={styles.tendersListTitle}>Active Tenders</h3>
       {tenders.length > 0 ? (
         <div className={styles.tendersList}>
           {tenders.map((tender, index) => (

@@ -107,7 +107,6 @@ const Home: NextPage = () => {
             alignItems: 'center',
           }}>
             <ConnectButton />
-            <h3 className={styles.subText}>Connect Wallet To Enter App</h3>
           </div>
         )}
       </div>
